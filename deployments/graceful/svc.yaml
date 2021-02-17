@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: graceful
+  labels:
+    app.kubernetes.io/name: graceful
+    app.kubernetes.io/instance: graceful
+    app.kubernetes.io/component: verification
+    app.kubernetes.io/managed-by: kustomize
+  namespace: graceful
+spec:
+  type: NodePort
+  ports:
+    - name: http-graceful
+      port: 80
+      protocol: TCP
+      targetPort: 8080
+      nodePort: 30008
+  selector:
+    app.kubernetes.io/name: graceful
+    app.kubernetes.io/instance: graceful

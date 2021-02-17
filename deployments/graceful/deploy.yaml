@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: graceful
+  namespace: graceful
+  labels:
+    app.kubernetes.io/name: graceful
+    app.kubernetes.io/instance: graceful
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: graceful
+      app.kubernetes.io/instance: graceful
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: graceful
+        app.kubernetes.io/instance: graceful
+    spec:
+      containers:
+        - name: graceful
+          image: graceful
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: app-port
+              containerPort: 8080
+              protocol: TCP

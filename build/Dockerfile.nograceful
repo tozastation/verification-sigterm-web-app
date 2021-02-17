@@ -1,0 +1,9 @@
+FROM golang:1.15 as build
+WORKDIR /go/src/github.com/tozastation/verification-sigterm-web-app
+COPY . .
+RUN CGO_ENABLED=0 GOOS=linux go build -o /go/bin/app ./cmd/nograceful/main.go
+# --- Runtime Container --- #
+FROM gcr.io/distroless/base-debian10
+COPY --from=build /go/bin/app /
+EXPOSE 80
+CMD ["/app"]

@@ -1,0 +1,21 @@
+apiVersion: skaffold/v1
+kind: Config
+build:
+  artifacts:
+    - image: graceful
+      context: ./
+      docker:
+        dockerfile: ./build/Dockerfile.graceful
+    - image: nograceful
+      context: ./
+      docker:
+        dockerfile: ./build/Dockerfile.nograceful
+  local:
+    push: false
+    useBuildkit: true
+    useDockerCLI: true
+deploy:
+  kubectl:
+    manifests:
+      - ./deployments/graceful/**.yaml
+      - ./deployments/nograceful/**.yaml
